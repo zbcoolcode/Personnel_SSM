@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="love.china.dao.DepartmentDao">
+
+  <!-- 查询所有部门,public List<Department> getDeps(); -->
+  <select id="getDeps" resultMap="dep">
+    select * from departments
+  </select>
+  
+  <!-- 通过部门ID查询部门信息,public Department getDepById(Integer depid) -->
+  <select id="getDepById" resultMap="dep">
+  	select * from departments where department_id=#{depid}
+  </select>
+  
+  <!-- 修改部门信息,public int updateDep(Department department) -->
+  <update id="updateDep">
+  	update departments set department_manager=#{depmanager},department_address=#{depaddress}
+  		where department_id=#{depid}
+  </update>
+  
+  <!-- 添加部门,public int addDep(Department department) -->
+  <insert id="addDep">
+  	insert into departments(department_name,department_manager,department_address) 
+  		value(#{depname},#{depmanager},#{depaddress})
+  </insert>
+  
+ <!--删除部门,public int deleteDep(Integer depid) --> 
+ <delete id="deleteDep">
+ 	delete from departments where department_id=#{depid}
+ </delete>
+ 
+  <resultMap type="love.china.bean.Department" id="dep">
+	  	<id property="depid" column="department_id"/>
+	  	<result property="depname" column="department_name"/>
+	  	<result property="depmanager" column="department_manager"/>
+	  	<result property="depaddress" column="department_address"/>
+	  	<result property="depcount" column="department_count"/>
+  </resultMap>
+</mapper>

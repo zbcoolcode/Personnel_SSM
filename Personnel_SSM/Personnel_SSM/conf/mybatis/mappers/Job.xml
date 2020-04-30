@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="love.china.dao.JobDao">
+
+  <!-- 查询所有职位,public List<Job> getJobs() -->
+  <select id="getJobs" resultMap="job">
+    select * from jobs
+  </select>
+  
+  <resultMap type="love.china.bean.Job" id="job">
+	  	<id property="jobid" column="job_id"/>
+	  	<result property="jobname" column="job_name"/>
+	  	<result property="jobcount" column="job_count"/>
+  </resultMap>
+</mapper>

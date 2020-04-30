@@ -1,0 +1,8 @@
+项目基于SSM编程实现对员工的增删改查，部门的增删查改，岗位的查询（增删改和部门相同，所以没有实现）
+
+用到的技术：
+spring
+springmvc
+mybatis
+ajax
+mysql

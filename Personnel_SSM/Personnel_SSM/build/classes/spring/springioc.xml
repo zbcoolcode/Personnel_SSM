@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- spring控制业务逻辑，事务 -->
+	<context:component-scan base-package="love.china.*">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
+	<!-- 配置数据源 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	<bean id="datasource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="driverClass" value="${jdbc.driver}"></property>
+	</bean>
+
+	<!--配置sqlSessionFactory  -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="datasource"></property>
+		<!-- 配置mybatis-config.xml文件的位置 -->
+		<property name="configLocation" value="classpath:mybatis/mybatis_config.xml"></property>
+		<!-- 配置xml映射文件的位置-->
+		<property name="mapperLocations" value="classpath:mybatis/mappers/*"></property>
+	</bean>
+	
+	<mybatis-spring:scan base-package="love.china.dao"/>
+	
+	<bean id="tm" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="datasource"></property>
+	</bean>
+	
+	<aop:config>
+		<aop:pointcut expression="execution(* love.china.service.*.*(..))" id="txpoint"/>
+		<aop:advisor advice-ref="mytx" pointcut-ref="txpoint"/>
+	</aop:config>
+	<tx:advice id="mytx" transaction-manager="tm">
+		<tx:attributes>
+			<tx:method name="*" rollback-for="java.lang.Exception"/>
+		</tx:attributes>
+	</tx:advice>
+</beans>

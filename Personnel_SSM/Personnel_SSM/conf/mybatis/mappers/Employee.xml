@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- 相当于employeedao接口的实现类，配置好到全局配置文件注册 -->
+  
+  <!-- namespace:写接口的全类名 -->
+<mapper namespace="love.china.dao.EmployeeDao">
+
+  <!-- 查询所有员工,public List<Employee> getEmps() -->
+  <select id="getEmps" resultMap="emp">
+    select * from employees
+  </select>
+  
+	<!--通过员工ID得到员工个人信息,public employee getEmpById(Integer id)--> 
+	<select id="getEmpById" resultMap="emp">
+		select * from employees where employee_id=#{id}
+	</select>
+	
+	<!-- 通过部门ID查询该部门的所有员工,public List<Employee> getEmpsByDepId(Integer depid) -->
+	<select id="getEmpsByDepId" resultMap="emp">
+		select *from employees where department_id=#{depid}
+	</select>
+	
+	
+  <!-- 修改员工信息,public int updateEmp(Employee employee) -->
+  <update id="updateEmp">
+  	update employees set department_id=#{depid},name=#{empname},gender=#{gender},
+  		hiredate=#{hiredate},address=#{address},birthdate=#{birthdate},phone=#{phone},
+  		job_id=#{jobid},salary=#{salary},password=#{password} where employee_id=#{empid}
+  </update>
+  
+	
+	<!-- 删除单个员工,public int deleteEmp(Integer empid) -->
+	<delete id="deleteEmp">
+		delete from employees where employee_id=#{empid}
+	</delete>
+	
+	 <!-- 提供部门ID输出员工,public int deleteEmpsByDepId(Integer depid) -->
+ 	<delete id="deleteEmpsByDepId">
+ 		delete from employees where department_id=#{depid}
+ 	</delete>
+  	
+  	<!-- 添加员共,public int addEmp(Employee employee) -->
+ 	<insert id="addEmp">
+ 	  insert into employees values(#{depid},#{empid},#{empname},
+ 	  #{gender},#{hiredate},#{address},#{birthdate},
+ 	  #{phone},#{jobid},#{salary},#{password})  
+  </insert>
+  
+  
+  
+  <resultMap type="love.china.bean.Employee" id="emp">
+	  	<id property="empid" column="employee_id"/>
+	  	<result property="depid" column="department_id"/>
+	  	<result property="empname" column="name"/>
+	  	<result property="gender" column="gender"/>
+	  	<result property="hiredate" column="hiredate"/>
+	  	<result property="address" column="address"/>
+	  	<result property="birthdate" column="birth_date"/>
+	  	<result property="phone" column="phone"/>
+	  	<result property="jobid" column="job_id"/>
+	  	<result property="salary" column="salary"/>
+	  	<result property="password" column="password"/>
+  </resultMap>
+</mapper>

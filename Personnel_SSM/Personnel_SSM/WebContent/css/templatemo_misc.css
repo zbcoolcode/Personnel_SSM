@@ -1,0 +1,26 @@
+//chrome谷歌浏览器，Safari苹果浏览器
+
+input[name="color"]::-webkit-input-placeholder { /* WebKit browsers */ 
+color: black;
+
+font-size:15px;
+}
+
+//firefox火狐浏览器
+input[name="color"]:-moz-placeholder { /* Mozilla Firefox 4 to 18 */ 
+color: black;
+
+font-size:15px;
+} 
+input[name="color"]::-moz-placeholder { /* Mozilla Firefox 19+ */ 
+color: black;
+
+font-size:15px;
+}
+
+//IE浏览器
+input[name="color"]:-ms-input-placeholder { /* Internet Explorer 10+ */ 
+color: black;
+
+font-size:15px;
+}
